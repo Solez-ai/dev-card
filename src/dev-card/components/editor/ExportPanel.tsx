@@ -23,8 +23,10 @@ export const ExportPanel = ({ cardRef, projectId, projectName }: ExportPanelProp
   const [svgCode, setSvgCode] = useState('');
   const [copiedSvg, setCopiedSvg] = useState(false);
 
-  const shareUrl = `${window.location.origin}/card/${projectId}`;
-  const embedCode = `[![${projectName} DevCard](${shareUrl}/preview.png)](${shareUrl})`;
+  // TODO: Future - Implement backend storage for persistent card sharing
+  // For now, we share the app URL so others can create their own
+  const shareUrl = window.location.origin;
+  const embedCode = `[![DevCard](${shareUrl}/preview-card.png)](${shareUrl})`;
 
   const secureCopy = async (text: string, onSuccess: () => void) => {
     // 1. Try Modern Async Clipboard API
@@ -211,7 +213,7 @@ export const ExportPanel = ({ cardRef, projectId, projectName }: ExportPanelProp
 
       {/* Share Link */}
       <div className="space-y-2">
-        <p className="text-xs text-muted-foreground">Share Link</p>
+        <p className="text-xs text-muted-foreground">Share App Link</p>
         <div className="flex gap-2 max-w-full">
           <Input
             value={shareUrl}
@@ -225,9 +227,12 @@ export const ExportPanel = ({ cardRef, projectId, projectName }: ExportPanelProp
             onClick={handleCopyLink}
             className="shrink-0"
           >
-            {copiedLink ? <Check size={16} /> : <Copy size={16} />}
+            {copiedLink ? <Check size={16} /> : <Share2 size={16} />}
           </Button>
         </div>
+        <p className="text-[10px] text-muted-foreground italic">
+          *Direct card sharing coming soon in v2.0
+        </p>
       </div>
 
       {/* Embed Code Dialog */}

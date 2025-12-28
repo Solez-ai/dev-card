@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Theme } from '../types';
 import { fetchProxyImage } from '../utils/puter';
@@ -14,13 +15,13 @@ export const TechStackIcons = ({ techs, theme, maxDisplay = 8 }: TechStackIconsP
   const isDark = theme !== 'minimal';
   const iconUrl = `https://skillicons.dev/icons?i=${displayTechs.join(',')}&theme=${isDark ? 'dark' : 'light'}`;
 
-  const [imgSrc, setImgSrc] = useState(iconUrl);
+  const [imgSrc, setImgSrc] = useState<string>('');
 
   useEffect(() => {
     let mounted = true;
 
     // Reset to URL on change, then fetch proxy
-    setImgSrc(iconUrl);
+    setImgSrc(''); // Clear previous image while loading new one
 
     const loadProxyImage = async () => {
       // Small delay to debounce rapid changes
@@ -49,17 +50,21 @@ export const TechStackIcons = ({ techs, theme, maxDisplay = 8 }: TechStackIconsP
   }
 
   return (
-    <div className="flex flex-wrap gap-2 items-center justify-center">
-      <img
-        src={imgSrc}
-        alt="Tech Stack"
-        className={cn(
-          'h-10 object-contain',
-          'filter drop-shadow-lg'
-        )}
-        loading="lazy"
-        crossOrigin="anonymous"
-      />
+    <div className="flex flex-wrap gap-2 items-center justify-center min-h-[40px]">
+      {!imgSrc ? (
+        <Skeleton className="h-10 w-48" />
+      ) : (
+        <img
+          src={imgSrc}
+          alt="Tech Stack"
+          className={cn(
+            'h-10 object-contain',
+            'filter drop-shadow-lg'
+          )}
+          loading="lazy"
+          crossOrigin="anonymous"
+        />
+      )}
       {techs.length > maxDisplay && (
         <span className="text-xs font-mono text-muted-foreground px-2 py-1 bg-muted/50 rounded-full">
           +{techs.length - maxDisplay} more

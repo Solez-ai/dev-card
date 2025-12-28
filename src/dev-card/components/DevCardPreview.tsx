@@ -39,14 +39,14 @@ export const DevCardPreview = forwardRef<HTMLDivElement, DevCardPreviewProps>(
     const hasBadges = selectedBadges.length > 0;
     const needsExtraHeight = hasGitHub && hasBadges;
 
-    const [avatarSrc, setAvatarSrc] = useState(config.avatar || config.github?.avatar || '');
+    const [avatarSrc, setAvatarSrc] = useState('');
 
     useEffect(() => {
       const url = config.avatar || config.github?.avatar;
       if (!url) return;
 
       let mounted = true;
-      setAvatarSrc(url);
+
 
       const loadProxy = async () => {
         const proxyUrl = await fetchProxyImage(url);
@@ -107,7 +107,6 @@ export const DevCardPreview = forwardRef<HTMLDivElement, DevCardPreviewProps>(
                     src={avatarSrc}
                     alt={config.name}
                     className="w-full h-full object-cover"
-                    crossOrigin="anonymous"
                   />
                 ) : (
                   <User size={32} className="text-muted-foreground" />

@@ -14,9 +14,14 @@ export const fetchProxyImage = async (url: string, retries = 3): Promise<string>
     for (let i = 0; i < retries; i++) {
         try {
             // Check if puter is defined
-            if (typeof puter === 'undefined') {
+            // @ts-ignore
+            if (typeof window.puter === 'undefined') {
+                if (i > 1) { // Stop waiting after ~1 second (2 retries * 500ms)
+                    console.warn('Puter.js not found, skipping proxy.');
+                    return url;
+                }
                 console.warn('Puter.js not loaded yet, waiting...');
-                await sleep(1000);
+                await sleep(500);
                 continue;
             }
 

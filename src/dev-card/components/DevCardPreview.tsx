@@ -13,10 +13,11 @@ interface DevCardPreviewProps {
   config: CardConfig;
   rarity: Rarity;
   className?: string;
+  useProxy?: boolean;
 }
 
 export const DevCardPreview = forwardRef<HTMLDivElement, DevCardPreviewProps>(
-  ({ config, rarity, className }, ref) => {
+  ({ config, rarity, className, useProxy = false }, ref) => {
     // ... [No changes to helpers] ...
     const themeClass = {
       hacker: '',
@@ -39,7 +40,7 @@ export const DevCardPreview = forwardRef<HTMLDivElement, DevCardPreviewProps>(
     const hasBadges = selectedBadges.length > 0;
     const needsExtraHeight = hasGitHub && hasBadges;
 
-    const [avatarSrc, setAvatarSrc] = useState('');
+    const [avatarSrc, setAvatarSrc] = useState(config.avatar || config.github?.avatar || '');
 
     useEffect(() => {
       const url = config.avatar || config.github?.avatar;
@@ -48,6 +49,8 @@ export const DevCardPreview = forwardRef<HTMLDivElement, DevCardPreviewProps>(
       let mounted = true;
 
 
+      if (!useProxy) return;
+
       const loadProxy = async () => {
         const proxyUrl = await fetchProxyImage(url);
         if (mounted) setAvatarSrc(proxyUrl);
@@ -55,7 +58,7 @@ export const DevCardPreview = forwardRef<HTMLDivElement, DevCardPreviewProps>(
 
       loadProxy();
       return () => { mounted = false; };
-    }, [config.avatar, config.github?.avatar]);
+    }, [config.avatar, config.github?.avatar, useProxy]);
 
     return (
       <div className={cn(themeClass, className)}>
@@ -136,6 +139,7 @@ export const DevCardPreview = forwardRef<HTMLDivElement, DevCardPreviewProps>(
               <TechStackIcons
                 techs={config.techStack}
                 theme={config.theme}
+                useProxy={useProxy}
               />
             </div>
 

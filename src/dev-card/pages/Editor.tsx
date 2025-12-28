@@ -105,7 +105,24 @@ export const Editor = () => {
       {/* Center - Card Preview */}
       <main className="flex-1 min-w-0 flex items-center justify-center p-8 overflow-auto bg-muted/5 relative">
         <div className="animate-scale-in">
-          <DevCardPreview ref={cardRef} config={currentProject.config} rarity={currentProject.rarity} />
+          <div className="animate-scale-in">
+            {/* VISIBLE UI - Fast, unsafe images */}
+            <DevCardPreview
+              config={currentProject.config}
+              rarity={currentProject.rarity}
+              useProxy={false}
+            />
+          </div>
+
+          {/* HIDDEN EXPORT DOM - Slow, safe base64 images */}
+          <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0" aria-hidden="true">
+            <DevCardPreview
+              ref={cardRef}
+              config={currentProject.config}
+              rarity={currentProject.rarity}
+              useProxy={true}
+            />
+          </div>
         </div>
       </main>
 

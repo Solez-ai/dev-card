@@ -18,8 +18,7 @@ export const Dashboard = () => {
     projects,
     isLoading: isStoreLoading,
     createNewProject,
-    deleteProject,
-    duplicateProject
+    deleteProject
   } = useDevCardStore();
 
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -55,12 +54,7 @@ export const Dashboard = () => {
     navigate(`/editor/${id}`);
   };
 
-  const handleDuplicate = (id: string) => {
-    const newProject = duplicateProject(id);
-    if (newProject) {
-      navigate(`/editor/${newProject.id}`);
-    }
-  };
+
 
   const handleDeleteConfirm = () => {
     deleteProject(deleteDialog.id);
@@ -133,7 +127,6 @@ export const Dashboard = () => {
                   <ProjectCard
                     project={project}
                     onEdit={handleEdit}
-                    onDuplicate={handleDuplicate}
                     onDelete={(id) => setDeleteDialog({
                       open: true,
                       id,
@@ -151,7 +144,7 @@ export const Dashboard = () => {
       <footer className="relative border-t border-border/40 bg-card/20 backdrop-blur-md mt-auto">
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col items-center justify-center gap-6">
-            
+
             <div className="flex items-center gap-4">
               <a
                 href="https://x.com/Solez_None"

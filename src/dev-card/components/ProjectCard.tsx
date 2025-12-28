@@ -2,21 +2,19 @@ import { DevCardProject } from '../types';
 import { RarityBadge } from './RarityBadge';
 import { cn } from '@/lib/utils';
 import { formatDistanceToNow } from 'date-fns';
-import { Edit3, Copy, Trash2, Code2, Clock } from 'lucide-react';
+import { Edit3, Trash2, Code2, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface ProjectCardProps {
   project: DevCardProject;
   onEdit: (id: string) => void;
-  onDuplicate: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export const ProjectCard = ({ 
-  project, 
-  onEdit, 
-  onDuplicate, 
-  onDelete 
+export const ProjectCard = ({
+  project,
+  onEdit,
+  onDelete
 }: ProjectCardProps) => {
   const themeClass = {
     hacker: '',
@@ -37,7 +35,7 @@ export const ProjectCard = ({
         )}
       >
         {/* Preview Thumbnail */}
-        <div 
+        <div
           className={cn(
             'relative aspect-[4/3] p-4',
             'bg-gradient-to-br from-muted/50 to-muted',
@@ -46,7 +44,7 @@ export const ProjectCard = ({
         >
           {/* Mini Card Preview */}
           <div className="relative w-full h-full flex items-center justify-center">
-            <div 
+            <div
               className={cn(
                 'w-24 h-32 rounded-lg',
                 'bg-card border border-border/50',
@@ -105,14 +103,7 @@ export const ProjectCard = ({
             <Edit3 size={14} />
             Edit
           </Button>
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={() => onDuplicate(project.id)}
-            className="gap-1.5"
-          >
-            <Copy size={14} />
-          </Button>
+
           <Button
             size="sm"
             variant="destructive"

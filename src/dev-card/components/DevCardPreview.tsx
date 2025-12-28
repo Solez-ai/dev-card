@@ -48,6 +48,8 @@ export const DevCardPreview = forwardRef<HTMLDivElement, DevCardPreviewProps>(
 
       let mounted = true;
 
+      // Update immediately
+      setAvatarSrc(url);
 
       if (!useProxy) return;
 

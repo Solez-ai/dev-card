@@ -20,13 +20,13 @@ export const TechStackIcons = ({ techs, theme, maxDisplay = 8, useProxy = false 
   useEffect(() => {
     let mounted = true;
 
-    // Reset to URL on change, then fetch proxy
+    // Always update to the latest URL first
+    setImgSrc(iconUrl);
 
+    if (!useProxy) return;
 
     const loadProxyImage = async () => {
       // Small delay to debounce rapid changes
-      if (!useProxy) return;
-
       await new Promise(r => setTimeout(r, 500));
       if (!mounted) return;
 

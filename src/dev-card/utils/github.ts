@@ -1,7 +1,5 @@
 import { GitHubData } from '../types';
 
-const GITHUB_API = 'https://api.github.com';
-
 interface GitHubUser {
   login: string;
   avatar_url: string;
@@ -20,40 +18,37 @@ interface GitHubEvent {
 
 export const fetchGitHubData = async (username: string): Promise<GitHubData> => {
   try {
-    // Fetch user profile
-    const userResponse = await fetch(`${GITHUB_API}/users/${username}`);
-    if (!userResponse.ok) {
+    // Use backend proxy to fetch GitHub data securely
+    const userRes = await fetch(`/api/github?path=users/${username}`);
+    if (!userRes.ok) {
       throw new Error('User not found');
     }
-    const userData: GitHubUser = await userResponse.json();
-    
-    // Fetch repositories
-    const reposResponse = await fetch(`${GITHUB_API}/users/${username}/repos?per_page=100&sort=updated`);
-    const reposData: GitHubRepo[] = await reposResponse.json();
-    
-    // Calculate total stars
+    const userData: GitHubUser = await userRes.json();
+
+    // Repos
+    const reposRes = await fetch(`/api/github?path=users/${username}/repos?per_page=100&sort=updated`);
+    const reposData: GitHubRepo[] = await reposRes.json();
+
     const totalStars = reposData.reduce((sum, repo) => sum + repo.stargazers_count, 0);
-    
-    // Get top languages
+
     const languageCounts: Record<string, number> = {};
     reposData.forEach(repo => {
       if (repo.language) {
         languageCounts[repo.language] = (languageCounts[repo.language] || 0) + 1;
       }
     });
-    
+
     const topLanguages = Object.entries(languageCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 3)
       .map(([lang]) => lang);
-    
-    // Fetch contribution activity (approximate streak)
-    const eventsResponse = await fetch(`${GITHUB_API}/users/${username}/events/public?per_page=100`);
-    const eventsData: GitHubEvent[] = await eventsResponse.json();
-    
-    // Calculate approximate streak
+
+    // Events
+    const eventsRes = await fetch(`/api/github?path=users/${username}/events/public?per_page=100`);
+    const eventsData: GitHubEvent[] = await eventsRes.json();
+
     const contributionStreak = calculateStreak(eventsData);
-    
+
     return {
       username,
       avatar: userData.avatar_url,
@@ -67,6 +62,7 @@ export const fetchGitHubData = async (username: string): Promise<GitHubData> => 
     throw error;
   }
 };
+
 
 const calculateStreak = (events: GitHubEvent[]): number => {
   if (events.length === 0) return 0;

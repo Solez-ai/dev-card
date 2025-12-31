@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/image-proxy.ts", "use": "@vercel/node" },
+    { "src": "api/github.ts", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/image-proxy(.*)", "dest": "/api/image-proxy.ts" },
+    { "src": "/api/github(.*)", "dest": "/api/github.ts" }
+  ]
+}

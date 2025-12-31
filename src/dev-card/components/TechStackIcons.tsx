@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Theme } from '../types';
-import { fetchProxyImage } from '../utils/puter';
+import { fetchProxyImage } from '../utils/imageProxy';
 
 interface TechStackIconsProps {
   techs: string[];

@@ -6,7 +6,7 @@ import { XPBar } from './XPBar';
 import { TechStackIcons } from './TechStackIcons';
 import { BadgeIcon } from './BadgeIcon';
 import { cn } from '@/lib/utils';
-import { fetchProxyImage } from '../utils/puter';
+import { fetchProxyImage } from '../utils/imageProxy';
 import { Github, Code2, Star, GitFork, Flame, User } from 'lucide-react';
 
 interface DevCardPreviewProps {
